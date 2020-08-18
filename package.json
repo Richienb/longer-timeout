@@ -1,6 +1,6 @@
 {
 	"name": "longer-timeout",
-	"version": "0.0.0",
+	"version": "1.0.0",
 	"description": "Create timeouts longer than supported by `setTimeout` or `setInterval`.",
 	"repository": "https://github.com/Richienb/longer-timeout.git",
 	"author": "Richie Bendall <richiebendall@gmail.com>",
