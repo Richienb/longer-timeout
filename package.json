@@ -1,8 +1,8 @@
 {
-	"name": "the-module",
+	"name": "longer-timeout",
 	"version": "0.0.0",
-	"description": "My awesome module.",
-	"repository": "https://github.com/Richienb/the-module.git",
+	"description": "Create timeouts longer than supported by `setTimeout` or `setInterval`.",
+	"repository": "https://github.com/Richienb/longer-timeout.git",
 	"author": "Richie Bendall <richiebendall@gmail.com>",
 	"license": "MIT",
 	"main": "index.js",
@@ -11,17 +11,28 @@
 		"index.d.ts"
 	],
 	"engines": {
-		"node": ">=10"
+		"node": ">=10.4"
 	},
 	"scripts": {
 		"lint": "xo",
 		"test": "xo && ava"
 	},
-	"keywords": [],
+	"keywords": [
+		"timeout",
+		"interval",
+		"timers",
+		"math",
+		"limit",
+		"max",
+		"integer",
+		"bigint"
+	],
 	"dependencies": {},
 	"devDependencies": {
 		"ava": "^3.11.1",
 		"eslint-config-richienb": "^0.4.2",
+		"in-range": "^2.0.0",
+		"time-span": "^4.0.0",
 		"xo": "^0.33.0"
 	},
 	"xo": {
