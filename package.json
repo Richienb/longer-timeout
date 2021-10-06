@@ -2,20 +2,23 @@
 	"name": "longer-timeout",
 	"version": "1.0.0",
 	"description": "Create timeouts longer than supported by `setTimeout` or `setInterval`.",
-	"repository": "https://github.com/Richienb/longer-timeout.git",
-	"author": "Richie Bendall <richiebendall@gmail.com>",
+	"repository": "Richienb/longer-timeout",
+	"author": {
+		"name": "Richie Bendall",
+		"email": "richiebendall@gmail.com"
+	},
 	"license": "MIT",
-	"main": "index.js",
+	"type": "module",
+	"exports": "./index.js",
 	"files": [
 		"index.js",
 		"index.d.ts"
 	],
 	"engines": {
-		"node": ">=10.4"
+		"node": ">=12"
 	},
 	"scripts": {
-		"lint": "xo",
-		"test": "xo && ava"
+		"test": "xo && ava && tsd"
 	},
 	"keywords": [
 		"timeout",
@@ -29,13 +32,15 @@
 	],
 	"dependencies": {},
 	"devDependencies": {
-		"ava": "^3.11.1",
-		"eslint-config-richienb": "^0.4.2",
-		"in-range": "^2.0.0",
-		"time-span": "^4.0.0",
-		"xo": "^0.33.0"
+		"ava": "^3.15.0",
+		"in-range": "^3.0.0",
+		"time-span": "^5.0.0",
+		"tsd": "^0.17.0",
+		"xo": "^0.45.0"
 	},
-	"xo": {
-		"extends": "richienb"
+	"tsd": {
+		"compilerOptions": {
+			"target": "es2020"
+		}
 	}
 }

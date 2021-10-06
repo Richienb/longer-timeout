@@ -1,62 +1,42 @@
-"use strict"
+const TIMEOUT_LIMIT = 2_147_483_647n;
+let ids = 0n;
 
-const MAX_TIMEOUT = 2147483647n
+const timeoutMap = new Map();
 
-class Timeout {
-	constructor(callback, timeout) {
-		this.callback = callback
-		this.timeout = BigInt(timeout)
-		this.start()
-	}
+export function setLongerTimeout(callback, milliseconds) {
+	const longerTimeoutId = ++ids;
+	const timeoutId = milliseconds <= TIMEOUT_LIMIT
+		? setTimeout(() => {
+			timeoutMap.delete(longerTimeoutId);
+			callback();
+		}, Number(milliseconds))
+		: setTimeout(() => {
+			milliseconds -= TIMEOUT_LIMIT;
+			setLongerTimeout(callback, milliseconds);
+		}, Number(TIMEOUT_LIMIT));
 
-	start() {
-		if (this.timeout <= MAX_TIMEOUT) {
-			this.timeoutInstance = setTimeout(this.callback, Number(this.timeout))
-		} else {
-			this.timeoutInstance = setTimeout(() => {
-				this.timeout -= MAX_TIMEOUT
-				this.start()
-			}, MAX_TIMEOUT)
-		}
-	}
-
-	stop() {
-		clearTimeout(this.timeoutInstance)
-	}
+	timeoutMap.set(longerTimeoutId, timeoutId);
+	return longerTimeoutId;
 }
 
-class Interval {
-	constructor(callback, interval) {
-		this.callback = callback
-		this.interval = BigInt(interval)
-		this.remainingTime = this.interval
-		this.start()
-	}
-
-	start() {
-		if (this.remainingTime <= MAX_TIMEOUT) {
-			this.timeoutInstance = setTimeout(() => {
-				this.callback()
-				this.remainingTime = this.interval
-				this.start()
-			}, Number(this.remainingTime))
-		} else {
-			this.timeoutInstance = setTimeout(() => {
-				this.remainingTime -= MAX_TIMEOUT
-				this.start()
-			}, MAX_TIMEOUT)
-		}
-	}
-
-	stop() {
-		clearTimeout(this.timeoutInstance)
-	}
+export function clearLongerTimeout(id) {
+	clearTimeout(timeoutMap.get(id));
+	timeoutMap.delete(id);
 }
 
-const stopTimer = timerInstance => timerInstance.stop()
+export function setLongerInterval(callback, milliseconds) {
+	const longerIntervalId = ++ids;
 
-exports.setLongerTimeout = (callback, timeout) => new Timeout(callback, timeout)
-exports.clearLongerTimeout = stopTimer
+	const longerTimeoutId = setLongerTimeout(() => {
+		timeoutMap.set(longerIntervalId, setLongerInterval(callback, milliseconds));
+		callback();
+	}, milliseconds);
 
-exports.setLongerInterval = (callback, interval) => new Interval(callback, interval)
-exports.clearLongerInterval = stopTimer
+	timeoutMap.set(longerIntervalId, longerTimeoutId);
+	return longerIntervalId;
+}
+
+export function clearLongerInterval(id) {
+	clearLongerTimeout(timeoutMap.get(id));
+	timeoutMap.delete(id);
+}

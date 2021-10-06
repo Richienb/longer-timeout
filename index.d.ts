@@ -1,73 +1,73 @@
-/// <reference lib="es2020"/>
+/**
+Execute `callback` after `milliseconds` have passed.
 
-type Opaque<Type, Token = unknown> = Type & { readonly __opaque__: Token }
+@param callback The callback to execute.
+@param milliseconds The number of milliseconds to wait.
 
-declare namespace longerTimeout {
-	export type TimerObject = Opaque<object, "Timer">
-}
+@returns The timeout id. To stop the timeout, provide the id to `clearLongerTimeout`.
 
-declare const longerTimeout: {
-	/**
-	Execute the `callback` after `timeout` milliseconds has passed.
-	@param callback The callback to execute.
-	@param timeout The amount of milliseconds to wait.
-	@example
-	```
-	const { setLongerTimeout } = require("longer-timeout");
+@example
+```
+import {setLongerTimeout} from 'longer-timeout';
 
-	setLongerTimeout(() => {
-		console.log("10 seconds have passed.");
-	}, 10000);
-	```
-	*/
-	setLongerTimeout(callback: () => Record<string, unknown>, timeout: number | BigInt): longerTimeout.TimerObject
+setLongerTimeout(() => {
+	console.log('10 seconds have passed.');
+}, 10000);
+```
+*/
+export function setLongerTimeout(callback: () => unknown, milliseconds: number | BigInt): BigInt;
 
-	/**
-	Cancel the timer started by `setLongerTimeout`.
-	@param timerObject The timer object to stop.
-	@example
-	```
-	const { setLongerTimeout, clearLongerTimeout } = require("longer-timeout");
+/**
+Stop a timeout started by `startLongerTimeout`.
 
-	const timer = setLongerTimeout(() => {
-		console.log("10 seconds have passed.");
-	}, 10000);
+@param id The id of the timeout to stop. This is returned when `setLongerTimeout` is called.
 
-	clearLongerTimeout(timer);
-	```
-	*/
-	clearLongerTimeout(timerObject: longerTimeout.TimerObject): void
+@example
+```
+import {setLongerTimeout, clearLongerTimeout} from 'longer-timeout';
 
-	/**
-	Execute the `callback` every `interval` milliseconds.
-	@param callback The callback to execute.
-	@param interval The amount of milliseconds between invocations.
-	@example
-	```
-	const { setLongerInterval } = require("longer-timeout");
+const timer = setLongerTimeout(() => {
+	console.log('10 seconds have passed.');
+}, 10000);
 
-	const timer = setLongerInterval(() => {
-		console.log("10 seconds have passed.");
-	}, 10000);
-	```
-	*/
-	setLongerInterval(callback: () => Record<string, unknown>, interval: number | BigInt): longerTimeout.TimerObject
+clearLongerTimeout(timer);
+```
+*/
+export function clearLongerTimeout(id: BigInt): void;
 
-	/**
-	Cancel the timer started by `setLongerInterval`.
-	@param timerObject The timer object to stop.
-	@example
-	```
-	const { setLongerInterval, clearLongerInterval } = require("longer-timeout");
+/**
+Execute `callback` every `milliseconds`.
 
-	const timer = setLongerInterval(() => {
-		console.log("10 seconds have passed.");
-	}, 10000);
+@param callback The callback to execute.
+@param milliseconds The number of milliseconds to wait between each execution.
 
-	clearLongerInterval(timer);
-	```
-	*/
-	clearLongerInterval(timerObject: longerTimeout.TimerObject): void
-}
+@returns The interval id. To stop the interval, provide the id to `clearLongerInterval`.
 
-export = longerTimeout
+@example
+```
+import {setLongerInterval} from 'longer-timeout';
+
+const timer = setLongerInterval(() => {
+	console.log('10 seconds have passed.');
+}, 10000);
+```
+*/
+export function setLongerInterval(callback: () => unknown, milliseconds: number | BigInt): BigInt;
+
+/**
+Stop an interval started by `startLongerInterval`.
+
+@param id The id of the interval to stop. This is returned when `setLongerInterval` is called.
+
+@example
+```
+import {setLongerInterval, clearLongerInterval} from 'longer-timeout';
+
+const timer = setLongerInterval(() => {
+	console.log('10 seconds have passed.');
+}, 10000);
+
+clearLongerInterval(timer);
+```
+*/
+export function clearLongerInterval(id: BigInt): void;
